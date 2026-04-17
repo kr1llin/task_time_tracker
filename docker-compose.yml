@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: database:1.0.0
+    container_name: postgres
+    build:
+      context: ./databse
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=database
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    name: "postgres_data"

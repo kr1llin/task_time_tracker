@@ -1,0 +1,15 @@
+package timetracker.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import timetracker.models.dto.ErrorResponse;
+
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTaskNotFound(TaskNotFoundException e){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("TASK_NOT_FOUND", e.getMessage()));
+    }
+}
