@@ -1,3 +1,9 @@
+CREATE TABLE employees (
+  employee_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL
+);
+
 CREATE TABLE tasks (
   task_id SERIAL PRIMARY KEY,
   title VARCHAR(100) NOT NULL,
@@ -17,10 +23,4 @@ CREATE TABLE time_records (
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id),
   CONSTRAINT fk_time_records_tasks
     FOREIGN KEY (task_id) REFERENCES tasks(task_id)
-);
-
-CREATE TABLE employees (
-  employee_id SERIAL PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
 );

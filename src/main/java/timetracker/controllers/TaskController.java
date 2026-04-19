@@ -1,5 +1,6 @@
 package timetracker.controllers;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import timetracker.models.Task;
@@ -19,11 +20,11 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TaskResponse createTask(@RequestBody TaskRequest taskRequest){
+    public Task createTask(@Valid @RequestBody TaskRequest taskRequest){
         Task task = new Task();
         task.setTitle(taskRequest.getTitle());
         task.setDescription(taskRequest.getDescription());
-        return new TaskResponse(taskService.createTask(task));
+        return taskService.createTask(task);
     }
 
     @GetMapping("/{id}")
@@ -32,7 +33,7 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/status")
-    public TaskResponse updateStatus(@PathVariable Integer id, @RequestBody UpdateTaskStatusRequest request){
+    public TaskResponse updateStatus(@PathVariable Integer id, @Valid @RequestBody UpdateTaskStatusRequest request){
         return new TaskResponse(taskService.updateStatusById(id, request.getStatus()));
     }
 }

@@ -3,7 +3,7 @@ services:
     image: database:1.0.0
     container_name: postgres
     build:
-      context: ./databse
+      context: ./database
       dockerfile: Dockerfile
     environment:
       - POSTGRES_USER=postgres
