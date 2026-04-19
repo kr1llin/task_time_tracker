@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class UpdateTaskStatusRequest {
+    @NotBlank
     @NotNull
     @Pattern(regexp = "NEW|IN_PROGRESS|DONE", message = "Status has to be NEW, IN_PROGRESS or DONE")
     private String status;

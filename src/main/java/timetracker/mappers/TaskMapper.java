@@ -10,7 +10,7 @@ public interface TaskMapper {
     @Options(useGeneratedKeys = true, keyColumn = "task_id", keyProperty = "id")
     int insert(Task task);
 
-    @Select("SELECT task_id, title, description FROM tasks WHERE id = #{id}")
+    @Select("SELECT task_id, title, description, status FROM tasks WHERE task_id = #{id}")
     @Results(id = "taskResultMap", value = {
             @Result(property = "id", column = "task_id"),
             @Result(property = "title", column = "title"),
@@ -19,6 +19,6 @@ public interface TaskMapper {
     })
     Task selectById(Integer id);
 
-    @Update("UPDATE tasks SET status = #{status} WHERE id = #{id}")
+    @Update("UPDATE tasks SET status = #{status} WHERE task_id = #{id}")
     int updateStatus(@Param("id") Integer id, @Param("status") String status);
 }

@@ -38,10 +38,11 @@ public class TimeRecordsController {
     }
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     public List<TimeRecordResponse> getTimeRecordsByEmployeeAndPeriod(@RequestParam Integer employeeId,
-                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime begin,
-                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end){
-        List<TimeRecord> timeRecords = timeRecordsService.getByEmployeeAndTimePeriod(employeeId, begin, end);
+                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime beginTime,
+                                            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime){
+        List<TimeRecord> timeRecords = timeRecordsService.getByEmployeeAndTimePeriod(employeeId, beginTime, endTime);
         return timeRecords.stream().map(TimeRecordResponse::toResponse).collect(Collectors.toList());
     }
 }
