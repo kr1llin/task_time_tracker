@@ -14,6 +14,22 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  app:
+    image: app:1.0.0
+    build: .
+    container_name: timetracker-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/timetracker
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+    restart: unless-stopped
+
 volumes:
   postgres_data:
     name: "postgres_data"

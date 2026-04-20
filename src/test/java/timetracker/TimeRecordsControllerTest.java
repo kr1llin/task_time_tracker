@@ -78,9 +78,9 @@ class TimeRecordsControllerTest {
                 .thenReturn(List.of(record));
 
         mockMvc.perform(get("/time-records")
-                        .param("employeeId", "101")
-                        .param("start", "2026-04-01T00:00:00")
-                        .param("end", "2026-04-18T23:59:59"))
+                        .param("employeeId", "1")
+                        .param("beginTime", "2026-04-01T00:00:00")
+                        .param("endTime", "2026-04-18T23:59:59"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -104,8 +104,8 @@ class TimeRecordsControllerTest {
     void testGetTimeRecord_WithInvalidDateFormat_ShouldReturn400() throws Exception {
         mockMvc.perform(get("/time-records")
                         .param("employeeId", "101")
-                        .param("start", "2026/04/01")
-                        .param("end", "2026/04/18"))
+                        .param("beginTime", "2026.04.01")
+                        .param("endTime", "2026.04.18"))
                 .andExpect(status().isBadRequest());
     }
 }

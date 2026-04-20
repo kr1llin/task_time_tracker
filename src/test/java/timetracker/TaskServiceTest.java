@@ -51,7 +51,7 @@ public class TaskServiceTest {
 
         assertNotNull(actual);
         assertEquals(1, actual.getId());
-        assertEquals("Old task", task.getDescription());
+        assertEquals("Old task", task.getTitle());
         verify(taskMapper, times(1)).selectById(1);
     }
 

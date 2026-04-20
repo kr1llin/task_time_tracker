@@ -5,7 +5,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import timetracker.mappers.TaskMapper;
 import timetracker.mappers.TimeRecordsMapper;
+import timetracker.models.Task;
 import timetracker.models.TimeRecord;
 import timetracker.services.TimeRecordsService;
 
@@ -22,6 +24,9 @@ public class TimeRecordsServiceTest {
     @Mock
     private TimeRecordsMapper timeRecordsMapper;
 
+    @Mock
+    private TaskMapper taskMapper;
+
     @InjectMocks
     private TimeRecordsService timeRecordsService;
 
@@ -29,11 +34,16 @@ public class TimeRecordsServiceTest {
     void testRecordCreationShouldReturnRecord(){
         TimeRecord record = new TimeRecord();
         record.setTaskId(1);
-        record.setEmployeeId(100);
+        record.setEmployeeId(1);
         record.setBeginTime(LocalDateTime.now().minusHours(5));
         record.setEndTime(LocalDateTime.now());
         record.setDescription("Test description");
 
+        Task mockTask = new Task();
+        mockTask.setId(1);
+
+        // not null return
+        doReturn(mockTask).when(taskMapper).selectById(1);
         // 1 - successful insertion
         doReturn(1).when(timeRecordsMapper).insert(record);
 

@@ -14,20 +14,25 @@ import java.util.List;
 @Service
 public class TimeRecordsService {
     private final TimeRecordsMapper timeRecordsMapper;
+    private final TaskMapper taskMapper;
 
-    public TimeRecordsService(TimeRecordsMapper timeRecordsMapper){
+    public TimeRecordsService(TimeRecordsMapper timeRecordsMapper, TaskMapper taskMapper){
         this.timeRecordsMapper = timeRecordsMapper;
+        this.taskMapper = taskMapper;
     }
 
     public TimeRecord createTimeRecord(TimeRecord timeRecord){
+        // check if task exists
+        Task task = taskMapper.selectById(timeRecord.getTaskId());
+        if (task == null) {
+            throw new TaskNotFoundException(timeRecord.getTaskId());
+        }
         timeRecordsMapper.insert(timeRecord); // gonna set id
         return timeRecord;
     }
 
     public List<TimeRecord> getByEmployeeAndTimePeriod(Integer employeeId, LocalDateTime beginPeriod, LocalDateTime endPeriod){
-        List<TimeRecord> timeRecords = timeRecordsMapper.selectByEmployeeAndTimePeriod(employeeId, beginPeriod, endPeriod);
-        if (timeRecords == null) throw new TimeRecordNotFoundException(employeeId, beginPeriod, endPeriod);
-        return timeRecords;
+        return timeRecordsMapper.selectByEmployeeAndTimePeriod(employeeId, beginPeriod, endPeriod);
     }
 }
 
