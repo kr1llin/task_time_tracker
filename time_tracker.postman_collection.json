@@ -1,0 +1,255 @@
+{
+  "info": {
+    "_postman_id": "9d2f26c1-48a1-41d1-af0c-d371f8b8672c",
+    "name": "time_tracker",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51881605",
+    "_collection_link": "https://go.postman.co/collection/51881605-9d2f26c1-48a1-41d1-af0c-d371f8b8672c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "addTask",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Status is NEW\", function(){",
+              "    pm.expect(pm.response.json().status).to.eql(\"NEW\");",
+              "});",
+              "",
+              "pm.environment.set(\"taskId\", pm.response.json().id);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"title\": \"taskName\",\n    \"description\": \"task description\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/tasks",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "tasks"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addTimeRecord",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Response is not null\", function(){",
+              "    pm.expect(pm.response.json()).to.not.be.null;",
+              "});",
+              "",
+              "pm.test(\"Check employeeId to be equal to env employee\", function(){",
+              "    pm.expect(pm.response.json().employeeId).to.equal(Number(pm.environment.get(\"employeeId\")));",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"employeeId\" : {{employeeId}},\n    \"taskId\" : {{taskId}},\n    \"beginTime\" : \"2026-04-01T00:00:00\",\n    \"endTime\" : \"2026-04-18T23:59:59\",\n    \"description\" : \"Task description\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/time-records",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "time-records"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getTask",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"id is equal to taskId\", function(){",
+              "    pm.expect(pm.response.json().id).to.equal(pm.environment.get(\"taskId\"));",
+              "});",
+              "",
+              "pm.test(\"status is NEW\", function(){",
+              "    pm.expect(pm.response.json().status).to.eql(\"NEW\");",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/tasks/{{taskId}}",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "tasks",
+            "{{taskId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updateTaskStatus",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"status is DONE\", function(){",
+              "    pm.expect(pm.response.json().status).to.eql(\"DONE\");",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\" : \"DONE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseURL}}/tasks/{{taskId}}/status",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "tasks",
+            "{{taskId}}",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getTimeRecordsByPeriodAndEmployeeId",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Resonse is not null\", function(){",
+              "    pm.expect(pm.response.json()).to.not.be.null;",
+              "});",
+              "",
+              "pm.test(\"employeeId is equal to queryId\", function(){",
+              "    pm.expect(pm.response.json()[0].employeeId).to.equal(Number(pm.environment.get(\"employeeId\")));",
+              "})"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseURL}}/time-records?employeeId={{employeeId}}&beginTime=2000-04-01T00:00:00&endTime=2026-04-18T23:59:59",
+          "host": [
+            "{{baseURL}}"
+          ],
+          "path": [
+            "time-records"
+          ],
+          "query": [
+            {
+              "key": "employeeId",
+              "value": "{{employeeId}}"
+            },
+            {
+              "key": "beginTime",
+              "value": "2000-04-01T00:00:00"
+            },
+            {
+              "key": "endTime",
+              "value": "2026-04-18T23:59:59"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "taskId",
+      "value": ""
+    }
+  ]
+}
